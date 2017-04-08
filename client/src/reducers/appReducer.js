@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import budget from './budget.js';
+import CCcashback from './CCcashback.js'
 
 //implement lines below when there are actually other reducers in folder
 // import * as reducers from './reducers';
@@ -7,7 +8,7 @@ import budget from './budget.js';
 
 // temporary combineReducers
 const appReducer = combineReducers({
-  budget
+  budget, CCcashback
 });
 
 export default appReducer;

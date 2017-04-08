@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS thesis;
+DROP DATABASE IF EXISTS heroku_aa9603bdcb7e15e;
 
-CREATE DATABASE thesis;
+CREATE DATABASE heroku_aa9603bdcb7e15e;
 
-USE thesis;
+USE heroku_aa9603bdcb7e15e;
 
 CREATE TABLE users (
   id int NOT NULL AUTO_INCREMENT,
@@ -12,42 +12,15 @@ CREATE TABLE users (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE budgets (
-  id int NOT NULL AUTO_INCREMENT,
-  user_id int NOT NULL,
-  month timestamp, 
-  PRIMARY KEY (id)
-);
 
-CREATE TABLE categorytypes (
-  id int NOT NULL AUTO_INCREMENT,
-  name varchar(255),
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE budgetcategories (
-  id int NOT NULL AUTO_INCREMENT,
-  budget_id int NOT NULL,
-  category_id int NOT NULL,
-  goalvalue decimal(7,2),
-  actualvalue decimal(7,2),
+CREATE TABLE CCcategories (
+  id in NOT NULL AUTO_INCREMENT,
+  CCcategoryname varchar(255) NOT NULL,
+  cashbackpercent number (255)
+  CCtypeid int (255)
   PRIMARY KEY (id)
 );
 
 /*  Execute this file from the command line by typing:
- *    mysql -u root < schema.sql
+ *    mysql -u root < server/schema.sql
  *  to create the database and the tables.*/
- 
--- below is Dummy Data Chris was using. Feel free to remove
-
--- INSERT INTO users (id, userid, name) VALUES (1, 1, 'Chris'); 
--- INSERT INTO budgets (id, user_id, month) VALUES (1, 1, NOW());
--- INSERT INTO categorytypes (id, name) VALUES (1, 'Restaurants');
--- INSERT INTO categorytypes (id, name) VALUES (2, 'Gas and Transportation');
--- INSERT INTO budgetcategories (id, budget_id, category_id, goalvalue, actualvalue) VALUES (1, 1, 1, 500.00, 200.00);
--- INSERT INTO budgetcategories (id, budget_id, category_id, goalvalue, actualvalue) VALUES (2, 1, 2, 100.00, 50.00);
-
--- INSERT INTO budgets (id, user_id, month) VALUES (2, 2, NOW());
--- INSERT INTO budgetcategories (id, budget_id, category_id, goalvalue, actualvalue) VALUES (3, 2, 1, 550.00, 200.00);
--- INSERT INTO budgetcategories (id, budget_id, category_id, goalvalue, actualvalue) VALUES (4, 2, 2, 150.00, 10.00);
-
