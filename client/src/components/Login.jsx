@@ -1,6 +1,9 @@
 import React from 'react';
 import config from './../../../config/config.js';
 
+//styling
+import RaisedButton from 'material-ui/RaisedButton';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -82,17 +85,29 @@ class Login extends React.Component {
   render() {
     return (
       <div className="login">
-        <h3>Welcome!</h3>
+        <h1>Welcome to Financial Advisorly!</h1>
+        <br />
+        <h3>You are well on your way to saving big</h3>
+        <br/>
         {/* TODO: pass loggedIn prop here && check
         // read the token, if they are signed in: render button to add stuff to plaid OR go to balances
         // else show this button*/}
+        <p>Please login to your FinancialAdvisorly account: </p>
         <form action="/auth/auth0" method="GET">
-          <button >Login with Auth0</button>
+          <button >Login</button>
         </form>
-        <button id="link-button"
-          onClick={this.onPlaidClick}
-        >Add Accounts to Plaid</button>
-        <button onClick={this.getAccountData}>Account data</button>
+        <br />
+
+        <p>Then, add your bank accounts:</p>
+        <br/>
+        <RaisedButton id="link-button"
+          onClick={this.onPlaidClick} label="Add Bank Accounts" />
+          <br />
+          <br/ >
+        <p>Developer Console magic:</p>
+        <br/>
+        <RaisedButton onClick={this.getAccountData} label="Check account data" />
+
       </div>
     );
   }
