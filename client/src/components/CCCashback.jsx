@@ -10,6 +10,7 @@ import { createCreditcardsKickoff, toggleCashbackSetup } from '../actions/credit
 //styling
 import RaisedButton from 'material-ui/RaisedButton';
 
+
 class CCCashback extends React.Component {
   constructor(props) {
     super(props);
@@ -51,6 +52,7 @@ class CCCashback extends React.Component {
           <p>If so, please use your //credit card// to get the most cash back!</p>
           <br/>
           <RaisedButton label="Setup" onClick={this.props.toggleCashbackSetup} />
+
           
         </div> );
     }
