@@ -14,9 +14,24 @@ const creditcards = (state = initialState, action) => {
       };
       break;
     case 'RECEIVED_CREDITCARDS':
+      var checkCC = action.cc;
+      var resultsCC = state.cc;
+
+      var same = false;
+      for (var j = 0; j < checkCC.length; j++) {
+        for (var i = 0; i < resultsCC.length; i++) {
+          if (resultsCC[i].ccid  === checkCC[j].ccid) {
+            same = true;
+          }
+        }
+        if (!same) {
+          resultsCC.push(checkCC[j]);
+        }
+        same = false;
+      } 
       return {
         ...state,
-        cc: action.cc
+        cc: resultsCC
       };
       break;
     case 'FETCH_CREDITCARDS_ERROR':
@@ -109,23 +124,37 @@ const creditcards = (state = initialState, action) => {
 
       var newCC = JSON.parse(JSON.stringify(state.cc));
 
-      console.log('ccindex', ccindex);
-
       newCC[ccindex].categories.push({
         catid: catid, 
         name: name,
         percent: percent
       });
 
-      console.log('old', state.cc, 'new', newCC);
+      return {
+        ...state,
+        cc: newCC
+      };
+      break;
+    case 'GET_CASHBACK_CATEGORY': 
+      var categories = action.cbcategories;
+      var ccid = action.ccid;
 
+      // put fetched categories in correct credit card's categories without changing initial state
+      var newCC = JSON.parse(JSON.stringify(state.cc));
+
+      for (var i = 0; i < newCC.length; i++) {
+        if (newCC[i].ccid === ccid) {
+          newCC[i].categories = categories;
+          break;
+        }
+      }
+      
       return {
         ...state,
         cc: newCC
       };
       break;
     case 'EDIT_CATEGORY_NAME':
-      console.log('CATEGORY NAME EDITED!');
       var catname = action.catname;
       return {
         ...state,

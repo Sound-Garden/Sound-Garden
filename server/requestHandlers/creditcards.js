@@ -19,22 +19,29 @@ var client = new plaid.Client(
 );
 
 
-exports.getUserCreditcards = (req, res) => {
+exports.getCreditcards = (req, res) => {
 
   var userid;
   if (req.session.passport) {
-    userid = req.session.passport.user.id;
-    console.log('you are logged in with userid:', userid);
-    
+    userid = req.session.passport.user.id;    
   } else {
     userid = "facebook|10211056100732598";
     console.log('YOU ARE NOT LOGGED IN');
   }
-  cc.getUserCreditcards(userid, (err, results) => {
+  cc.getCreditcards(userid, (err, results) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.status(200).send(results);
+      var data = [];
+      console.log('RESULTS', results);
+      for (var i = 0; i < results.length; i++) {
+        data.push({
+          ccid: results[i].id,
+          ccname: results[i].ccname,
+          categories: []
+        });
+      }
+      res.status(200).send(data);
     }
   });
 };
@@ -106,37 +113,31 @@ exports.createCreditCards = function(req, res) {
             creditcards.push(bank + ' - ' + banks[bank].credit[i].account.official_name);
           }
         }
-        console.log('creditcards *********', creditcards);
-        // insert creditcards into creditcard table
 
-        // TEST stuff
-        // creditcards = ['this','that','or the other'];
+        // console.log('creditcards *********', creditcards);
+
+        // insert creditcards into creditcard table
         
         Promise.map(creditcards, (creditcard) => {
-          return db.checkCreditcard(userid, creditcard, (err, results) => {
+          return cc.checkCreditcard(userid, creditcard, (err, results) => {
             if (err) {
-              return res.status(500).send(err);
+              return err;
             } else {
-              console.log('checkCreditcard RESULTS', results);
               // credit card does not exist
               if (results.length === 0) {
-                db.createCreditcard(userid, creditcard, (err, results) => {
+                cc.createCreditcard(userid, creditcard, (err, results) => {
                   if (err) {
-                    console.log('err creating credit card..:', err);
-                    // return res.status(500).send(err);
+                    return err;
                   } else {
-                    console.log('created credit card:', results);
                   }
                 });
-              // else, credit card already exists
               }
             };
           }
         )
-        .then(results => {
-          console.log('got through promises!', results);
-          res.sendStatus(200);
-        })
+      })
+      .then(results => {
+        res.sendStatus(200);
       })
       .catch(function(error) {
         return res.json({error: 'error in getting account data from plaid clients'});

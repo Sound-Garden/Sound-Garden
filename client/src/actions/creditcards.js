@@ -8,10 +8,9 @@ export const fetchingCreditcards = () => {
 };
 
 export const receivedCreditcards = (creditcards) => {
-  var results = setCC(creditcards);
   return {
     type: 'RECEIVED_CREDITCARDS',
-    cc: results
+    cc: creditcards
   };
 };
 
@@ -47,14 +46,12 @@ export const createCreditcardsKickoff = () => {
       dispatch(getCreditcards());
     })
     .catch((err) => {
-      console.log('error in get', err);
       dispatch(createCreditcardsError(err));
     });
   }
 };
 
 export const getCreditcards = () => {
-  // userid = userid || 2;
   return (dispatch) => {
     dispatch(fetchingCreditcards());
     fetch('/creditcards/getcreditcards', {
@@ -68,7 +65,7 @@ export const getCreditcards = () => {
       return response.json();
     })
     .then((json) => {
-      console.log('json from getCreditcards in action', json);
+      // console.log('json from getCreditcards in action', json);
       dispatch(receivedCreditcards(json));
     })
     .catch((err) => {
@@ -77,46 +74,5 @@ export const getCreditcards = () => {
     });
   };
 };
-
-
-// reorganize the db results to a format that makes more sense on state
-var setCC = function (array) {
-  var results = [];
-
-  if (array.length > 0) {
-
-    var ccid = array[0].ccid;
-    results[0] = {
-      ccid: ccid, 
-      ccname: array[0].ccname,
-      categories: []
-    };
-
-    var resultsIndex = 0;
-
-    for (var i = 0; i < array.length; i++) {
-      
-      if (array[i].ccid !== ccid) {
-        ccid = array[i].ccid;
-        resultsIndex++;
-        results[resultsIndex] = {
-          ccid: ccid,
-          ccname: array[i].ccname,
-          categories: []
-        };
-      }
-      
-      results[resultsIndex].categories.push({
-        name: array[i].categoryname,
-        percent: array[i].value, 
-        catid: array[i].catid
-      });
-    }
-  }
-
-  return results;
-};
-
-
 
 

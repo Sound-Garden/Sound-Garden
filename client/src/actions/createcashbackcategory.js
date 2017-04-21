@@ -57,3 +57,43 @@ export const createCashbackCategoryKickoff = (ccindex, ccid, name, percent) => {
     });
   };
 };
+
+export const getCashbackCategoriesKickoff = (ccid) => {
+  var url = '/cashback/getcashbackcategories/' + ccid;
+  return (dispatch) => {
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+    })
+    .then(response => {
+      return response.json();
+    })
+    .then((json) => {
+      dispatch(getCashbackCategory(ccid, json));
+    })
+    .catch((err) => {
+      dispatch(getCashbackCategoryError(err));
+    });
+  };
+};
+
+export const getCashbackCategory = (ccid, cbcategories) => {
+  return {
+    type: 'GET_CASHBACK_CATEGORY',
+    cbcategories: cbcategories,
+    ccid: ccid
+  };
+};
+
+export const getCashbackCategoryError = (error) => {
+  return {
+    type: 'GET_CASHBACK_CATEGORY_ERROR',
+    error: error
+  };
+};
+
+
+

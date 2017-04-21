@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import CashbackCategory from './CashbackCategory';
 
-import { createCashbackCategoryKickoff } from '../actions/createcashbackcategory';
+import { createCashbackCategoryKickoff, getCashbackCategoriesKickoff } from '../actions/createcashbackcategory';
 // import { handleCategoryChange } from '../actions/createcashbackcategory';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -18,6 +18,11 @@ class CreditCard extends React.Component {
     };
   }
 
+  componentWillMount () {
+    var ccid = this.props.creditcard.ccid;
+    this.props.getCashbackCategoriesKickoff(ccid);
+  }
+
   handleCategoryChange (catname) {
     this.setState({catname: catname});
   }
@@ -29,7 +34,9 @@ class CreditCard extends React.Component {
 
   render () {
     var creditcard = this.props.creditcard;
+    var categories = creditcard.categories;
     var ccid = creditcard.ccid;
+    var ccindex = this.props.ccindex;
     
     return (
       <div>
@@ -37,18 +44,17 @@ class CreditCard extends React.Component {
         <li>
           <h3>{ creditcard.ccname }</h3>
           <ul>
-            { creditcard.categories.map( (category, index) => { 
+            {categories.map((category, index) => {
               return (
                 <CashbackCategory 
-                  ccindex={this.props.key} 
                   key={index} 
-                  ccindex={this.props.ccindex} 
                   catindex={index} 
-                  category={category}
-                  catid={category.catid}
+                  category={category} 
+                  ccid={ccid}
+                  ccindex={ccindex}
                 />
-              )
-            }) }
+              );
+            })}
             <li>
               <p>• Category: 
                 <input type="text" 
@@ -71,22 +77,20 @@ class CreditCard extends React.Component {
   }
 }
 
+
 // const mapStateToProps = (state) => {
 // };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createCashbackCategoryKickoff: (ccindex, ccid, name, percent) => { dispatch(createCashbackCategoryKickoff(ccindex, ccid, name, percent)); },
+    createCashbackCategoryKickoff: (ccindex, ccid, name, percent) => { 
+      dispatch(createCashbackCategoryKickoff(ccindex, ccid, name, percent)); 
+    },
     // handleCategoryChange: (catname) => { dispatch(handleCategoryChange(catname)); },
     // handlePercentChange: (percent) => { dispatch(handlePercentChange(percent)); }
+    getCashbackCategoriesKickoff: (ccid) => { dispatch(getCashbackCategoriesKickoff(ccid)); }
   };
-};
+}
 
 export default connect (null, mapDispatchToProps) (CreditCard);
 
-
-
-
-                // <RaisedButton label="Add" onClick={ (e) => 
-                //   { this.props.createCashbackCategoryKickoff(
-                //     this.props.ccindex, ccid, this.state.catname, this.state.number) } } />
