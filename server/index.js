@@ -71,7 +71,7 @@ app.delete('/cashback/deletecashbackcategory/:catid', cashback.deleteCashbackCat
  * Google Maps routes
  */
 app.get('/google/geolocate', google.geolocate);
-app.post('/google/places', google.places);
+// app.post('/google/places', google.places);
 
 /** 
  * Yelp routes
