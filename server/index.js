@@ -55,7 +55,8 @@ app.get('/creditcards/createcreditcards', creditcards.createCreditCards);
  */
 app.get('/cashback/getallusercategories', cashback.getAllUserCategories);
 app.get('/cashback/getcashbackcategories/:catid', cashback.getCashbackCategories);
-app.post('/cashback/changecashbackpercent', cashback.changeCashbackPercent);
+app.post('/cashback/calculate', cashback.calculate);
+app.post('/cashback/changecashbackpercent', cashback.changeCashbackPercent); // PUT!!!! *****
 app.post('/cashback/createcashbackcategory', cashback.createCashbackCategory);
 app.delete('/cashback/deletecashbackcategory/:catid', cashback.deleteCashbackCategory);
 
@@ -63,7 +64,7 @@ app.delete('/cashback/deletecashbackcategory/:catid', cashback.deleteCashbackCat
  * Google Maps routes
  */
 app.get('/google/geolocate', google.geolocate);
-app.post('/google/places', google.places);
+// app.post('/google/places', google.places);
 
 /** 
  * Yelp routes

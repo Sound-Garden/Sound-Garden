@@ -6,7 +6,7 @@ exports.getCreditcards = (userid, cb) => {
 
   var query = `SELECT * from creditcards where userid = "${userid}";` ;
 
-  connection.query(query, (err, results) => {
+  connection.query(query, (err, results) => { // DONT NEED THIS CALLBACK!! TAKE THESE LINES OUT!!
     if (results.length === 0) {
       cb(err, null);
     } else {
@@ -15,7 +15,7 @@ exports.getCreditcards = (userid, cb) => {
   });
 };
 
-exports.checkCreditcard = function(userid, ccname, cb) {
+exports.checkCreditcard = (userid, ccname, cb) => {
 
   var query = `select * from creditcards where userid = "${userid}" and ccname like "${ccname}";`;
 
@@ -28,7 +28,7 @@ exports.checkCreditcard = function(userid, ccname, cb) {
   });
 };
 
-exports.createCreditcard = function(userid, ccname, cb) {
+exports.createCreditcard = (userid, ccname, cb) => {
 
   var query = `insert into creditcards (userid, ccname) values ("${userid}", "${ccname}");`;
 

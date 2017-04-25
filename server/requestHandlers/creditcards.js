@@ -33,7 +33,6 @@ exports.getCreditcards = (req, res) => {
       res.status(500).send(err);
     } else {
       var data = [];
-      console.log('RESULTS', results);
       for (var i = 0; i < results.length; i++) {
         data.push({
           ccid: results[i].id,
@@ -82,7 +81,6 @@ exports.createCreditCards = function(req, res) {
     var accountTypes = {};
     Promise.all(promises)
       .then(function(results) {
-        console.log(results);
         for (var j = 0; j < plaidInstitutions.length; j++) {
           accountData[plaidInstitutions[j].institution_name] = results[j];
         }
@@ -118,16 +116,22 @@ exports.createCreditCards = function(req, res) {
 
         // insert creditcards into creditcard table
         
+        
+
+        // CONVERT INTO PROMISES OR STRUGGLE WITH ASYNC MAT... 
+
+        // return
+
         Promise.map(creditcards, (creditcard) => {
           return cc.checkCreditcard(userid, creditcard, (err, results) => {
             if (err) {
-              return err;
+              return err; // THROW!!!!*****
             } else {
               // credit card does not exist
               if (results.length === 0) {
                 cc.createCreditcard(userid, creditcard, (err, results) => {
                   if (err) {
-                    return err;
+                    return err; // THROW!!
                   } else {
                   }
                 });
@@ -140,6 +144,7 @@ exports.createCreditCards = function(req, res) {
         res.sendStatus(200);
       })
       .catch(function(error) {
+        // res.status
         return res.json({error: 'error in getting account data from plaid clients'});
       });
     })
